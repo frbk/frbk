@@ -1,10 +1,10 @@
 name: Metrics
 on:
   # Schedule updates (each hour)
-  schedule: [{cron: "0 * * * *"}]
+  schedule: [{ cron: "0 * * * *" }]
   # Lines below let you run workflow manually and on each commit (optional)
   workflow_dispatch:
-  push: {branches: ["main"]}
+  push: { branches: ["main"] }
 
 jobs:
   github-metrics:
@@ -23,3 +23,21 @@ jobs:
           template: classic
           base: header
           config_timezone: ${{ secrets.USER_TIMEZONE }}
+  iso_calender:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          filename: iso_calendar.svg
+          # You'll need to setup a personal token in your secrets.
+          token: ${{ secrets.METRICS_TOKEN }}
+          # GITHUB_TOKEN is a special auto-generated token used for commits
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Options
+          user: frbk
+          template: classic
+          base: ""
+          config_timezone: ${{ secrets.USER_TIMEZONE }}
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: half-year
